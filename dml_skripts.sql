@@ -109,22 +109,6 @@ select distinct
     supplier_country
 from mock_data;
 
-insert into dim_date (
-    sale_date,
-    year_num,
-    month_num,
-    day_num
-)
-select distinct
-    dt,
-    extract(year from dt)::int,
-    extract(month from dt)::int,
-    extract(day from dt)::int
-from (
-    select to_date(sale_date, 'FMMM/FMDD/YYYY') as dt
-    from mock_data
-) t;
-
 insert into fact_sales (
     date_id,
     customer_id,
@@ -145,8 +129,6 @@ select
     m.sale_quantity,
     m.sale_total_price
 from mock_data m
-join dim_date dd
-    on dd.sale_date = to_date(m.sale_date, 'FMMM/FMDD/YYYY')
 join dim_customer dc
     on dc.customer_first_name is not distinct from m.customer_first_name
    and dc.customer_last_name is not distinct from m.customer_last_name
