@@ -69,18 +69,8 @@ create table dim_supplier (
     supplier_country text
 );
 
-create table dim_date (
-    date_id bigint generated always as identity primary key,
-    sale_date date not null,
-    year_num integer,
-    month_num integer,
-    day_num integer,
-    unique (sale_date)
-);
-
 create table fact_sales (
     fact_id bigint generated always as identity primary key,
-    date_id bigint not null references dim_date(date_id),
     customer_id bigint not null references dim_customer(customer_id),
     seller_id bigint not null references dim_seller(seller_id),
     product_id bigint not null references dim_product(product_id),
